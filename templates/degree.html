@@ -10,24 +10,38 @@
         <h5 class="text-center" style="font-size: 5rem">Enter Your Details</h5>
         <br /><br /><br />
         <form method="POST">
+            {% csrf_token %}
             <div class="container my-3">
                 <div class="form-group">
                     <label for="formName"><strong>Your Name</strong></label>
-                    <input type="text" class="form-control" id="formName" placeholder="Enter Your name...." name="name" />
+                    <input type="text" class="form-control" id="formName" placeholder="Enter Your name...." name="name" required />
                 </div>
                 <br />
                 <div class="form-group">
-                    <label for="formDegree">Your Degree</label>
-                    <input type="text" class="form-control" id="formDegree" placeholder="Enter Your Degree...." name="degree" />
+                    <label for="formName"><strong>Your University</strong></label>
+                    <input type="text" class="form-control" id="formName" placeholder="Enter Your University Name...." name="uniName" required />
                 </div>
                 <br />
                 <div class="form-group">
-                    <label for="formCgpa">Your CGPA</label>
-                    <input type="text" class="form-control" id="formCgpa" placeholder="Enter Your CGPA...." name="cgpa" />
+                    <label for="formDegree"><strong>Your Degree</strong></label>
+                    <input type="text" class="form-control" id="formDegree" placeholder="Enter Your complete Degree name...." name="degree" required />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="formCgpa"><strong>Your CGPA</strong></label>
+                    <input type="text" class="form-control" id="formCgpa" placeholder="Enter Your CGPA...." name="cgpa" required />
                 </div>
                 <br />
                 <div class="text-center">
-                    <button class="btn btn-outline-primary" type="submit">Submit</button>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-outline-primary" type="submit">Preview</button>
+                        </div>
+
+                        <div class="col">
+                            <a href="{% url 'degreepdf' %}"><button class="btn btn-outline-primary" type="submit">Download</button></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
