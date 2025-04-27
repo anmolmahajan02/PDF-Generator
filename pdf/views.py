@@ -2,7 +2,11 @@ from django.shortcuts import render,redirect
 from django.urls import reverse
 from urllib.parse import urlencode
 from django.template.loader import render_to_string
+from django.http import HttpResponse
+import pdfkit
+import os
 
+config = pdfkit.configuration(wkhtmltopdf=os.path.join('C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe')) 
 
 # Create your views here.
 def index(request):
@@ -32,14 +36,21 @@ def list(request):
     return render(request,'list.html')
 
 def degreepdf(request):
-    name = request.GET.get('name') 
-    uniName = request.GET.get('uniName') 
-    degreeName = request.GET.get('degree') 
-    cgpa = request.GET.get('cgpa')
+    context = {
+        'name' : request.GET.get('name') ,
+        'uniName' : request.GET.get('uniName') ,
+        'degreeName' : request.GET.get('degree') ,
+        'cgpa' : request.GET.get('cgpa')
+    }
     
-    return render(request, "degreepdf.html", {
-        'name': name,
-        'uniName': uniName,
-        'degree': degreeName,
-        'cgpa': cgpa
-    })
+    html = render_to_string('degreepdf.html',context)
+
+    options = {
+        'page-size':'A4',
+        'orientation':'Landscape'
+    }
+    pdf = pdfkit.from_string(html,False,options=options,configuration=config)
+    response = HttpResponse(pdf,content_type = 'application/pdf')
+    response['Content-Disposition'] = 'inline; filename ="degree.pdf"'
+    return response
+
