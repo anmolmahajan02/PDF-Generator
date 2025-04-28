@@ -84,6 +84,5 @@ def cvpdf(request):
         'degreeName' : degreeName ,
         'cgpa' : cgpa,
         'achievements':achievement
-
     }
     return render(request,"cvpdf.html",context)
