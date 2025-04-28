@@ -29,8 +29,24 @@ def degree(request):
     else:
         return render(request,"degree.html")
 
-def certificate(request):
-    return render(request,"certificate.html")
+def cv(request):
+    if request.method == "POST":
+        name = request.POST.get('name') 
+        uniName = request.POST.get('uniName') 
+        degreeName = request.POST.get('degree') 
+        cgpa = request.POST.get('cgpa')
+        achievements = request.POST.get('achievements')
+
+        query_string = urlencode({
+            'name': name,
+            'uniName': uniName,
+            'degree': degreeName,
+            'cgpa': cgpa,
+            'achievements':achievements,})
+        cv_url = reverse('cvpdf')
+        return redirect(f"{cv_url}?{query_string}")
+    else:
+        return render(request,"cv.html")
 
 def list(request):
     return render(request,'list.html')
@@ -54,3 +70,20 @@ def degreepdf(request):
     response['Content-Disposition'] = 'inline; filename ="degree.pdf"'
     return response
 
+def cvpdf(request):
+    name = request.GET.get('name')
+    uniName = request.GET.get('uniName')
+    degreeName = request.GET.get('degree')
+    cgpa = request.GET.get('cgpa')
+    achievements = request.GET.get('achievements')
+    achievement = achievements.split(',')
+
+    context = {
+        'name' : name ,
+        'uniName' : uniName ,
+        'degreeName' : degreeName ,
+        'cgpa' : cgpa,
+        'achievements':achievement
+
+    }
+    return render(request,"cvpdf.html",context)
