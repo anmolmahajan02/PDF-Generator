@@ -31,18 +31,44 @@ def degree(request):
 
 def cv(request):
     if request.method == "POST":
+        #Basic Info
         name = request.POST.get('name') 
         uniName = request.POST.get('uniName') 
-        degreeName = request.POST.get('degree') 
+        degreeName = request.POST.get('degree')
+        branch = request.POST.get('branch')
+        #Education
+        shortDegree = request.POST.get('shortDegree')
+        collegeBatch = request.POST.get('collegeBatch')
         cgpa = request.POST.get('cgpa')
+        seniorSecondary = request.POST.get('seniorSecondary')
+        seniorSecondaryMarks = request.POST.get('seniorSecondaryMarks')
+        seniorSecondaryBatch = request.POST.get('seniorSecondaryBatch')
+        secondary = request.POST.get('secondary')
+        secondaryMarks = request.POST.get('secondaryMarks')
+        secondaryBatch = request.POST.get('secondaryBatch')
+        
+        #
         achievements = request.POST.get('achievements')
+        #
 
         query_string = urlencode({
+            #Basic Info
             'name': name,
             'uniName': uniName,
             'degree': degreeName,
+            'branch': branch,
+            #Education
+            'shortDegree':shortDegree,
+            'collegeBatch':collegeBatch,
             'cgpa': cgpa,
-            'achievements':achievements,})
+            'seniorSecondary':seniorSecondary,
+            'seniorSecondaryMarks':seniorSecondaryMarks,
+            'seniorSecondaryBatch':seniorSecondaryBatch,
+            'secondary':secondary,
+            'secondaryMarks':secondaryMarks,
+            'secondaryBatch':secondaryBatch,
+            'achievements':achievements,
+            })
         cv_url = reverse('cvpdf')
         return redirect(f"{cv_url}?{query_string}")
     else:
@@ -71,18 +97,41 @@ def degreepdf(request):
     return response
 
 def cvpdf(request):
-    name = request.GET.get('name')
-    uniName = request.GET.get('uniName')
+    name = request.GET.get('name') 
+    uniName = request.GET.get('uniName') 
     degreeName = request.GET.get('degree')
+    branch = request.GET.get('branch')
+    #Education
+    shortDegree = request.GET.get('shortDegree')
+    collegeBatch = request.GET.get('collegeBatch')
     cgpa = request.GET.get('cgpa')
-    achievements = request.GET.get('achievements')
-    achievement = achievements.split(',')
+    seniorSecondary = request.GET.get('seniorSecondary')
+    seniorSecondaryMarks = request.GET.get('seniorSecondaryMarks')
+    seniorSecondaryBatch = request.GET.get('seniorSecondaryBatch')
+    secondary = request.GET.get('secondary')
+    secondaryMarks = request.GET.get('secondaryMarks')
+    secondaryBatch = request.GET.get('secondaryBatch')
+        
+        #
+    achievements = request.POST.get('achievements')
+        #
 
     context = {
-        'name' : name ,
-        'uniName' : uniName ,
-        'degreeName' : degreeName ,
-        'cgpa' : cgpa,
-        'achievements':achievement
+        #Basic Info
+        'name': name,
+        'uniName': uniName,
+        'degree': degreeName,
+        'branch': branch,
+        #Education
+        'shortDegree':shortDegree,
+        'collegeBatch':collegeBatch,
+        'cgpa': cgpa,
+        'seniorSecondary':seniorSecondary,
+        'seniorSecondaryMarks':seniorSecondaryMarks,
+        'seniorSecondaryBatch':seniorSecondaryBatch,
+        'secondary':secondary,
+        'secondaryMarks':secondaryMarks,
+        'secondaryBatch':secondaryBatch,
+        'achievements':achievements,
     }
     return render(request,"cvpdf.html",context)
