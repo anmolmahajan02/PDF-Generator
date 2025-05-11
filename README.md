@@ -9,9 +9,6 @@ A Django-based web application that allows users to input their academic and per
 - PDF export functionality
 - Bootstrap-powered responsive UI
 
-## 📷 Screenshots
-
-> Add screenshots of your form and generated CV here if desired.
 
 ## 🛠️ Tech Stack
 
