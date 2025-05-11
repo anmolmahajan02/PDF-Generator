@@ -48,8 +48,13 @@ def cv(request):
         secondaryBatch = request.POST.get('secondaryBatch')
         
         #
-        achievements = request.POST.get('achievements')
+        skills = request.POST.get('skills')
         #
+        #personal Details
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        linkedin = request.POST.get('linkedin')
+        github = request.POST.get('github')
 
         query_string = urlencode({
             #Basic Info
@@ -67,15 +72,19 @@ def cv(request):
             'secondary':secondary,
             'secondaryMarks':secondaryMarks,
             'secondaryBatch':secondaryBatch,
-            'achievements':achievements,
+            'skills':skills,
+            #personal details
+            'phone':phone,
+            'email':email,
+            'linkedin':linkedin,
+            'github':github,
             })
         cv_url = reverse('cvpdf')
         return redirect(f"{cv_url}?{query_string}")
     else:
         return render(request,"cv.html")
 
-def list(request):
-    return render(request,'list.html')
+
 
 def degreepdf(request):
     context = {
@@ -111,10 +120,22 @@ def cvpdf(request):
     secondary = request.GET.get('secondary')
     secondaryMarks = request.GET.get('secondaryMarks')
     secondaryBatch = request.GET.get('secondaryBatch')
+    #personal details
+    phone = request.GET.get('phone')
+    email = request.GET.get('email')
+    linkedin = request.GET.get('linkedin')
+    github = request.GET.get('github')
         
         #
-    achievements = request.POST.get('achievements')
+    skills = request.GET.get('skills')
         #
+    skill = []
+    if skills:
+        skills_list = skills.split(",")
+        for i in skills_list:
+            s=i.strip().capitalize
+            skill.append(s)
+    
 
     context = {
         #Basic Info
@@ -132,6 +153,20 @@ def cvpdf(request):
         'secondary':secondary,
         'secondaryMarks':secondaryMarks,
         'secondaryBatch':secondaryBatch,
-        'achievements':achievements,
+        'skills':skill,
+        #personal details
+        'phone':phone,
+        'email':email,
+        'linkedin':linkedin,
+        'github':github,
     }
-    return render(request,"cvpdf.html",context)
+    html = render_to_string('cvpdf.html',context)
+
+    options = {
+        'page-size':'A4',
+        'orientation':'Portrait'
+    }
+    pdf = pdfkit.from_string(html,False,options=options,configuration=config)
+    response = HttpResponse(pdf,content_type = 'application/pdf')
+    response['Content-Disposition'] = 'inline; filename ="cv.pdf"'
+    return response

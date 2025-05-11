@@ -5,7 +5,6 @@ urlpatterns=[
     path('',views.index,name="index"),
     path('degree',views.degree,name="degree"),
     path('cv',views.cv,name="cv"),
-    path('list',views.list,name="list"),
     path('degreepdf',views.degreepdf,name="degreepdf"),
     path('cvpdf',views.cvpdf,name="cvpdf"),
 ]
